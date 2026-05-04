@@ -1,0 +1,7 @@
+**/.mvn/
+**/mvnw
+**/mvnw.cmd
+**/*.iml
+**/.idea/
+**/.git/
+**/src/

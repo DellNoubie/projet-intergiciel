@@ -1,0 +1,182 @@
+version: '3.8'
+
+services:
+
+  # ===================== AUTH SERVICE =====================
+  auth-service:
+    image: eclipse-temurin:17-jdk
+    container_name: auth-service
+    working_dir: /app
+    volumes:
+      - ./auth-service.jar:/app/auth-service.jar
+    command: ["java", "-jar", "/app/auth-service.jar"]
+    ports:
+      - "8090:8080"   # 🔥 CHANGÉ (évite conflit 8080)
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://auth-db:5432/auth_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - auth-db
+    networks:
+      - microservices-network
+
+  auth-db:
+    image: postgres:15
+    container_name: auth-db
+    environment:
+      POSTGRES_DB: auth_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - auth-db-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  # ===================== USER SERVICE =====================
+  user-service:
+    image: eclipse-temurin:17-jdk
+    container_name: user-service
+    working_dir: /app
+    volumes:
+      - ./user-service.jar:/app/user-service.jar
+    command: ["java", "-jar", "/app/user-service.jar"]
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://user-db:5432/user_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - user-db
+    networks:
+      - microservices-network
+
+  user-db:
+    image: postgres:15
+    container_name: user-db
+    environment:
+      POSTGRES_DB: user_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - user-db-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  # ===================== PRODUCT ADD =====================
+  product-add-service:
+    image: eclipse-temurin:17-jdk
+    container_name: product-add-service
+    working_dir: /app
+    volumes:
+      - ./product-add-service.jar:/app/product-add-service.jar
+    command: ["java", "-jar", "/app/product-add-service.jar"]
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://product-db:5432/product_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - product-db
+    networks:
+      - microservices-network
+
+  product-db:
+    image: postgres:15
+    container_name: product-db
+    environment:
+      POSTGRES_DB: product_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - product-db-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  # ===================== ACCOUNT SERVICE =====================
+  account-creation-service:
+    image: eclipse-temurin:17-jdk
+    container_name: account-creation-service
+    working_dir: /app
+    volumes:
+      - ./account-creation-service.jar:/app/account-creation-service.jar
+    command: ["java", "-jar", "/app/account-creation-service.jar"]
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://account-db:5432/account_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - account-db
+    networks:
+      - microservices-network
+
+  account-db:
+    image: postgres:15
+    container_name: account-db
+    environment:
+      POSTGRES_DB: account_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - account-db-data:/var/lib/postgresql/data
+    networks:
+      - microservices-network
+
+  # ===================== OTHER SERVICES =====================
+  invoice-service:
+    image: eclipse-temurin:17-jdk
+    container_name: invoice-service
+    working_dir: /app
+    volumes:
+      - ./invoice-service.jar:/app/invoice-service.jar
+    command: ["java", "-jar", "/app/invoice-service.jar"]
+    ports:
+      - "8084:8084"
+    networks:
+      - microservices-network
+
+  image-service:
+    image: eclipse-temurin:17-jdk
+    container_name: image-service
+    working_dir: /app
+    volumes:
+      - ./image-service.jar:/app/image-service.jar
+    command: ["java", "-jar", "/app/image-service.jar"]
+    ports:
+      - "8085:8085"
+    networks:
+      - microservices-network
+
+  product-display-service:
+    image: eclipse-temurin:17-jdk
+    container_name: product-display-service
+    working_dir: /app
+    volumes:
+      - ./product-display-service.jar:/app/product-display-service.jar
+    command: ["java", "-jar", "/app/product-display-service.jar"]
+    ports:
+      - "8086:8086"
+    depends_on:
+      - product-db
+    networks:
+      - microservices-network
+
+# ===================== VOLUMES =====================
+volumes:
+  auth-db-data:
+  user-db-data:
+  product-db-data:
+  account-db-data:
+
+# ===================== NETWORK =====================
+networks:
+  microservices-network:
+    driver: bridge

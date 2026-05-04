@@ -1,0 +1,41 @@
+<div class="container mt-5">
+
+   <div class="container mt-5 d-flex justify-content-between align-items-center">
+      <mat-form-field appearance="outline" class="flex-grow-1">
+        <mat-label>Search any product</mat-label>
+        <input matInput
+               #searchkeyword
+               (keyup)="searchByKeyword(searchkeyword.value)"
+               name="searchKey"
+               id="searchKey"
+               placeholder="Search any product">
+        <mat-hint>Search any product</mat-hint>
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+
+   <div class="product-grid">
+      <div class="product-card" *ngFor="let p of productDetails">
+         <div class="image-container">
+            <img class="home-page-product-image"
+                 [src]="p.productImages && p.productImages.length > 0 ? p.productImages[0].url : 'data:image/svg+xml;charset=UTF-8,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%22200%22 height%3D%22200%22%3E%3Crect width%3D%22200%22 height%3D%22200%22 fill%3D%22%23f5f5f5%22%2F%3E%3Ctext x%3D%22100%22 y%3D%22110%22 font-size%3D%2213%22 text-anchor%3D%22middle%22 fill%3D%22%23aaa%22%3ESans image%3C%2Ftext%3E%3C%2Fsvg%3E'"
+                 alt="">
+         </div>
+         <div class="card-body">
+            <p class="product-name"><b>{{p.productName}}</b></p>
+            <p class="product-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos sed eaque molestias iste repudiandae in quos distinctio rem excepturi.</p>
+            <p class="product-price">
+               <b>Rs. {{p.productDiscountedPrice}}</b>&nbsp;
+               <b style="text-decoration: line-through; color: gray;">{{p.productActualPrice}}</b>
+            </p>
+            <button type="button" mat-raised-button color="warn" (click)="showProductDetails(p.productId)">View Details</button>
+         </div>
+      </div>
+   </div>
+
+    <div class="text-center mt-5" style="padding-bottom: 100px;" *ngIf="showLoadButton">
+      <button type="button" mat-raised-button color="primary" (click)="loadMoreProduct()"> Load more</button>
+    </div>
+
+    <div class="mt-5"></div>
+</div>

@@ -1,0 +1,118 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: API-GATEWAY
+
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_LAST
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+      routes:
+        # ─── Auth Service ───────────────────────────────────────────
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/authenticate/**, /registerNewUser/**
+
+        # ─── Auth Service — Swagger docs (PUBLIC, pas de JWT) ───────
+        - id: auth-service-swagger
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth-service/api-docs/**
+
+        # ─── Product Service ─────────────────────────────────────────
+        - id: product-service
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/products/**
+
+        # ─── Product Service — Swagger docs (PUBLIC) ─────────────────
+        - id: product-service-swagger
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/product-service/api-docs/**
+
+        # ─── Order Service ───────────────────────────────────────────
+        - id: order-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/orders/**, /cart/**
+
+        # ─── Order Service — Swagger docs (PUBLIC) ───────────────────
+        - id: order-service-swagger
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/order-service/api-docs/**
+
+        # ─── Payment Service ─────────────────────────────────────────
+        - id: payment-service
+          uri: lb://PAYMENT-SERVICE
+          predicates:
+            - Path=/payment/**
+
+        # ─── Payment Service — Swagger docs (PUBLIC) ─────────────────
+        - id: payment-service-swagger
+          uri: lb://PAYMENT-SERVICE
+          predicates:
+            - Path=/payment-service/api-docs/**
+
+        # ─── Report Service ──────────────────────────────────────────
+        - id: report-service
+          uri: lb://REPORT-SERVICE
+          predicates:
+            - Path=/reports/**
+
+        # ─── Report Service — Swagger docs (PUBLIC) ──────────────────
+        - id: report-service-swagger
+          uri: lb://REPORT-SERVICE
+          predicates:
+            - Path=/report-service/api-docs/**
+
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-methods: "*"
+            allowed-headers: "*"
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+jwt:
+  secret: 5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: Auth Service
+        url: /auth-service/api-docs
+      - name: Product Service
+        url: /product-service/api-docs
+      - name: Order Service
+        url: /order-service/api-docs
+      - name: Payment Service
+        url: /payment-service/api-docs
+      - name: Report Service
+        url: /report-service/api-docs

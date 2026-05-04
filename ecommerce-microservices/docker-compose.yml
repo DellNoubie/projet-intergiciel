@@ -1,0 +1,122 @@
+services:
+
+  # ─── Service Registry ────────────────────────────────────────────
+  eureka-server:
+    build:
+      context: ./eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8761/actuator/health | grep -q UP || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 300s
+    networks:
+      - microservices-network
+
+  # ─── API Gateway ─────────────────────────────────────────────────
+  api-gateway:
+    build:
+      context: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8090:8080"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      JWT_SECRET: 5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - microservices-network
+
+  # ─── Auth Service ────────────────────────────────────────────────
+  auth-service:
+    build:
+      context: ./auth-service
+    container_name: auth-service
+    ports:
+      - "8081:8081"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      JWT_SECRET: 5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - microservices-network
+
+  # ─── Product Service ─────────────────────────────────────────────
+  product-service:
+    build:
+      context: ./product-service
+    container_name: product-service
+    ports:
+      - "8083:8083"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - microservices-network
+
+  # ─── Order Service ───────────────────────────────────────────────
+  order-service:
+    build:
+      context: ./order-service
+    container_name: order-service
+    ports:
+      - "8084:8084"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - microservices-network
+
+  # ─── Payment Service ─────────────────────────────────────────────
+  payment-service:
+    build:
+      context: ./payment-service
+    container_name: payment-service
+    ports:
+      - "8085:8085"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      RAZORPAY_KEY_ID: rzp_test_AXBzvN2fkD4ESK
+      RAZORPAY_KEY_SECRET: bsZmiVD7p1GMo6hAWiy4SHSH
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - microservices-network
+
+  # ─── Report Service ──────────────────────────────────────────────
+  report-service:
+    build:
+      context: ./report-service
+    container_name: report-service
+    ports:
+      - "8086:8086"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - microservices-network
+
+# ─── Network ─────────────────────────────────────────────────────
+networks:
+  microservices-network:
+    driver: bridge

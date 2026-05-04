@@ -1,0 +1,17 @@
+com\ecommerce\order\client\ProductClientFallback.class
+com\ecommerce\order\config\WebSecurityConfig$1.class
+com\ecommerce\order\entity\OrderInput.class
+com\ecommerce\order\service\OrderService.class
+com\ecommerce\order\entity\OrderDetail.class
+com\ecommerce\order\entity\OrderProductQuantity.class
+com\ecommerce\order\service\CartService.class
+com\ecommerce\order\repository\OrderDetailRepository.class
+com\ecommerce\order\entity\ProductDTO.class
+com\ecommerce\order\client\ProductClient.class
+com\ecommerce\order\entity\Cart.class
+com\ecommerce\order\controller\CartController.class
+com\ecommerce\order\OrderServiceApplication.class
+com\ecommerce\order\controller\OrderController.class
+com\ecommerce\order\config\OpenApiConfig.class
+com\ecommerce\order\repository\CartRepository.class
+com\ecommerce\order\config\WebSecurityConfig.class

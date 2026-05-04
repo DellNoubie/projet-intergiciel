@@ -1,0 +1,40 @@
+<div class="container mt-5">
+
+    <div class="row">
+        <div class="col-6">
+
+            <div class="card image-container p-3">
+                <img [src]="product.productImages && product.productImages.length > 0 ? product.productImages[selectedProductIndex]?.url : 'data:image/svg+xml;charset=UTF-8,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%22300%22 height%3D%22300%22%3E%3Crect width%3D%22300%22 height%3D%22300%22 fill%3D%22%23f5f5f5%22%2F%3E%3Ctext x%3D%22150%22 y%3D%22155%22 font-size%3D%2216%22 text-anchor%3D%22middle%22 fill%3D%22%23aaa%22%3ESans image%3C%2Ftext%3E%3C%2Fsvg%3E'"
+                     class="product-zoom-image">
+            </div>
+
+            <div class="mt-2">
+                <mat-grid-list cols="3" gutterSize="10" rowHeight="1:1">
+                    <mat-grid-tile *ngFor="let file of product.productImages; let i = index;" (click)="changeIndex(i)" style="border: 1px solid lightgrey; cursor: pointer;">
+                        <img [src]="file.url" height="100px" >
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </div>
+           
+        </div>
+        <div class="col-6">
+            <div class="product-information">
+                <div class="mt-3">
+                    <h2>{{product.productName}}</h2>
+                </div>
+                <div class="mt-3">
+                    Description: <br>
+                    {{product.productDescription}}
+                </div>
+                <div class="mt-3">
+                    <b>Rs. {{product.productDiscountedPrice}}</b>&nbsp;&nbsp;<b style="text-decoration: line-through;">{{product.productActualPrice}}</b>
+                </div>
+                <div class="mt-5 text-center">
+                    <button mat-raised-button color="warn" style="width: 200px;" (click)="buyProduct(product.productId)"> Buy Now</button>
+                    &nbsp;
+                    <button mat-raised-button style="width: 200px;" (click)="addToCart(product.productId)">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

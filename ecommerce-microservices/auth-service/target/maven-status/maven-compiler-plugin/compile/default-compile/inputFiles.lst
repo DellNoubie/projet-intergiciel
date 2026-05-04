@@ -1,0 +1,15 @@
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\auth-service\src\main\java\com\ecommerce\auth\util\JwtUtil.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\auth-service\src\main\java\com\ecommerce\auth\filter\JwtRequestFilter.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\auth-service\src\main\java\com\ecommerce\auth\config\OpenApiConfig.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\auth-service\src\main\java\com\ecommerce\auth\service\UserService.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\auth-service\src\main\java\com\ecommerce\auth\service\CustomUserDetailsService.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\auth-service\src\main\java\com\ecommerce\auth\entity\JwtRequest.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\auth-service\src\main\java\com\ecommerce\auth\entity\JwtResponse.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\auth-service\src\main\java\com\ecommerce\auth\controller\AuthController.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\auth-service\src\main\java\com\ecommerce\auth\entity\Role.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\auth-service\src\main\java\com\ecommerce\auth\repository\UserRepository.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\auth-service\src\main\java\com\ecommerce\auth\config\WebSecurityConfig.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\auth-service\src\main\java\com\ecommerce\auth\entity\User.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\auth-service\src\main\java\com\ecommerce\auth\repository\RoleRepository.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\auth-service\src\main\java\com\ecommerce\auth\AuthServiceApplication.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\auth-service\src\main\java\com\ecommerce\auth\config\DataInitializer.java

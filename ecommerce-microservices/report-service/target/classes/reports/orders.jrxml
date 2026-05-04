@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+              http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="orders" pageWidth="595" pageHeight="842"
+              columnWidth="555" leftMargin="20" rightMargin="20"
+              topMargin="20" bottomMargin="20">
+
+    <parameter name="reportTitle" class="java.lang.String"/>
+    <parameter name="generatedDate" class="java.lang.String"/>
+
+    <field name="orderId"      class="java.lang.Integer"/>
+    <field name="userEmail"    class="java.lang.String"/>
+    <field name="productName"  class="java.lang.String"/>
+    <field name="quantity"     class="java.lang.Integer"/>
+    <field name="orderAmount"  class="java.lang.Double"/>
+    <field name="orderStatus"  class="java.lang.String"/>
+    <field name="orderAddress" class="java.lang.String"/>
+
+    <title>
+        <band height="60">
+            <staticText>
+                <reportElement x="0" y="0" width="555" height="30"/>
+                <textElement textAlignment="Center">
+                    <font size="18" isBold="true"/>
+                </textElement>
+                <text><![CDATA[E-Commerce — Rapport Commandes]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="0" y="35" width="555" height="20"/>
+                <textElement textAlignment="Center">
+                    <font size="10"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$P{reportTitle} + " | Généré le : " + $P{generatedDate}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+
+    <columnHeader>
+        <band height="25" splitType="Stretch">
+            <staticText><reportElement x="0"   y="0" width="40"  height="25" backcolor="#4A90D9" forecolor="#FFFFFF" mode="Opaque"/><textElement><font isBold="true"/></textElement><text><![CDATA[ID]]></text></staticText>
+            <staticText><reportElement x="40"  y="0" width="130" height="25" backcolor="#4A90D9" forecolor="#FFFFFF" mode="Opaque"/><textElement><font isBold="true"/></textElement><text><![CDATA[Email]]></text></staticText>
+            <staticText><reportElement x="170" y="0" width="130" height="25" backcolor="#4A90D9" forecolor="#FFFFFF" mode="Opaque"/><textElement><font isBold="true"/></textElement><text><![CDATA[Produit]]></text></staticText>
+            <staticText><reportElement x="300" y="0" width="40"  height="25" backcolor="#4A90D9" forecolor="#FFFFFF" mode="Opaque"/><textElement><font isBold="true"/></textElement><text><![CDATA[Qté]]></text></staticText>
+            <staticText><reportElement x="340" y="0" width="80"  height="25" backcolor="#4A90D9" forecolor="#FFFFFF" mode="Opaque"/><textElement><font isBold="true"/></textElement><text><![CDATA[Montant]]></text></staticText>
+            <staticText><reportElement x="420" y="0" width="80"  height="25" backcolor="#4A90D9" forecolor="#FFFFFF" mode="Opaque"/><textElement><font isBold="true"/></textElement><text><![CDATA[Statut]]></text></staticText>
+        </band>
+    </columnHeader>
+
+    <detail>
+        <band height="20" splitType="Stretch">
+            <textField><reportElement x="0"   y="0" width="40"  height="20"/><textFieldExpression><![CDATA[$F{orderId}]]></textFieldExpression></textField>
+            <textField><reportElement x="40"  y="0" width="130" height="20"/><textFieldExpression><![CDATA[$F{userEmail}]]></textFieldExpression></textField>
+            <textField><reportElement x="170" y="0" width="130" height="20"/><textFieldExpression><![CDATA[$F{productName}]]></textFieldExpression></textField>
+            <textField><reportElement x="300" y="0" width="40"  height="20"/><textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression></textField>
+            <textField><reportElement x="340" y="0" width="80"  height="20"/><textFieldExpression><![CDATA[$F{orderAmount} + " INR"]]></textFieldExpression></textField>
+            <textField><reportElement x="420" y="0" width="80"  height="20"/><textFieldExpression><![CDATA[$F{orderStatus}]]></textFieldExpression></textField>
+        </band>
+    </detail>
+
+    <pageFooter>
+        <band height="20">
+            <textField><reportElement x="0" y="0" width="555" height="20"/><textElement textAlignment="Right"/><textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression></textField>
+        </band>
+    </pageFooter>
+</jasperReport>

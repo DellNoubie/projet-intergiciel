@@ -1,0 +1,13 @@
+com\ecommerce\report\client\OrderClient.class
+com\ecommerce\report\client\OrderDTO.class
+com\ecommerce\report\service\ReportService.class
+com\ecommerce\report\client\ProductClient.class
+com\ecommerce\report\ReportServiceApplication.class
+com\ecommerce\report\client\ProductDTO.class
+com\ecommerce\report\client\ProductClientFallback.class
+com\ecommerce\report\config\FeignAuthConfig.class
+com\ecommerce\report\client\OrderClientFallback.class
+com\ecommerce\report\config\WebSecurityConfig.class
+com\ecommerce\report\controller\ReportController.class
+com\ecommerce\report\config\WebSecurityConfig$1.class
+com\ecommerce\report\config\OpenApiConfig.class

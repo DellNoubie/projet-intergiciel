@@ -1,0 +1,12 @@
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\report-service\src\main\java\com\ecommerce\report\config\FeignAuthConfig.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\report-service\src\main\java\com\ecommerce\report\controller\ReportController.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\report-service\src\main\java\com\ecommerce\report\ReportServiceApplication.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\report-service\src\main\java\com\ecommerce\report\client\ProductClient.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\report-service\src\main\java\com\ecommerce\report\config\OpenApiConfig.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\report-service\src\main\java\com\ecommerce\report\client\OrderClient.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\report-service\src\main\java\com\ecommerce\report\service\ReportService.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\report-service\src\main\java\com\ecommerce\report\client\OrderClientFallback.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\report-service\src\main\java\com\ecommerce\report\client\OrderDTO.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\report-service\src\main\java\com\ecommerce\report\client\ProductClientFallback.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\report-service\src\main\java\com\ecommerce\report\config\WebSecurityConfig.java
+C:\Users\lenovo\projet-intergiciel\ecommerce-microservices\report-service\src\main\java\com\ecommerce\report\client\ProductDTO.java

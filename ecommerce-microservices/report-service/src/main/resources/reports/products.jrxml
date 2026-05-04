@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports
+              http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="products" pageWidth="595" pageHeight="842"
+              columnWidth="555" leftMargin="20" rightMargin="20"
+              topMargin="20" bottomMargin="20">
+
+    <parameter name="reportTitle" class="java.lang.String"/>
+    <parameter name="generatedDate" class="java.lang.String"/>
+
+    <field name="productId"             class="java.lang.Integer"/>
+    <field name="productName"           class="java.lang.String"/>
+    <field name="productCategory"       class="java.lang.String"/>
+    <field name="productActualPrice"    class="java.lang.Double"/>
+    <field name="productDiscountedPrice" class="java.lang.Double"/>
+    <field name="productDescription"    class="java.lang.String"/>
+
+    <title>
+        <band height="60">
+            <staticText>
+                <reportElement x="0" y="0" width="555" height="30"/>
+                <textElement textAlignment="Center">
+                    <font size="18" isBold="true"/>
+                </textElement>
+                <text><![CDATA[E-Commerce — Catalogue Produits]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="0" y="35" width="555" height="20"/>
+                <textElement textAlignment="Center"><font size="10"/></textElement>
+                <textFieldExpression><![CDATA[$P{reportTitle} + " | Généré le : " + $P{generatedDate}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+
+    <columnHeader>
+        <band height="25">
+            <staticText><reportElement x="0"   y="0" width="40"  height="25" backcolor="#27AE60" forecolor="#FFFFFF" mode="Opaque"/><textElement><font isBold="true"/></textElement><text><![CDATA[ID]]></text></staticText>
+            <staticText><reportElement x="40"  y="0" width="150" height="25" backcolor="#27AE60" forecolor="#FFFFFF" mode="Opaque"/><textElement><font isBold="true"/></textElement><text><![CDATA[Nom]]></text></staticText>
+            <staticText><reportElement x="190" y="0" width="100" height="25" backcolor="#27AE60" forecolor="#FFFFFF" mode="Opaque"/><textElement><font isBold="true"/></textElement><text><![CDATA[Catégorie]]></text></staticText>
+            <staticText><reportElement x="290" y="0" width="80"  height="25" backcolor="#27AE60" forecolor="#FFFFFF" mode="Opaque"/><textElement><font isBold="true"/></textElement><text><![CDATA[Prix réel]]></text></staticText>
+            <staticText><reportElement x="370" y="0" width="80"  height="25" backcolor="#27AE60" forecolor="#FFFFFF" mode="Opaque"/><textElement><font isBold="true"/></textElement><text><![CDATA[Prix remisé]]></text></staticText>
+        </band>
+    </columnHeader>
+
+    <detail>
+        <band height="20">
+            <textField><reportElement x="0"   y="0" width="40"  height="20"/><textFieldExpression><![CDATA[$F{productId}]]></textFieldExpression></textField>
+            <textField><reportElement x="40"  y="0" width="150" height="20"/><textFieldExpression><![CDATA[$F{productName}]]></textFieldExpression></textField>
+            <textField><reportElement x="190" y="0" width="100" height="20"/><textFieldExpression><![CDATA[$F{productCategory}]]></textFieldExpression></textField>
+            <textField><reportElement x="290" y="0" width="80"  height="20"/><textFieldExpression><![CDATA[$F{productActualPrice} + " INR"]]></textFieldExpression></textField>
+            <textField><reportElement x="370" y="0" width="80"  height="20"/><textFieldExpression><![CDATA[$F{productDiscountedPrice} + " INR"]]></textFieldExpression></textField>
+        </band>
+    </detail>
+
+    <pageFooter>
+        <band height="20">
+            <textField><reportElement x="0" y="0" width="555" height="20"/><textElement textAlignment="Right"/><textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression></textField>
+        </band>
+    </pageFooter>
+</jasperReport>

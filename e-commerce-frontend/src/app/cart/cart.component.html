@@ -1,0 +1,50 @@
+<div class="container mt-5">
+    <div align="right" class="mb-3">
+        <button (click)="checkout()"
+                color="primary"
+                mat-raised-button
+                [disabled]="cartDetails.length === 0">
+            Checkout
+        </button>
+    </div>
+
+    <div *ngIf="cartDetails.length === 0" class="text-center mt-4">
+        <p>Votre panier est vide.</p>
+    </div>
+
+    <table *ngIf="cartDetails.length > 0"
+           mat-table
+           [dataSource]="cartDetails"
+           class="mat-elevation-z8">
+
+        <ng-container matColumnDef="Name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.productName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Description">
+            <th mat-header-cell *matHeaderCellDef> Description </th>
+            <td mat-cell *matCellDef="let element"> — </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Price">
+            <th mat-header-cell *matHeaderCellDef> Price </th>
+            <td mat-cell *matCellDef="let element"> {{element.productPrice}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Discounted Price">
+            <th mat-header-cell *matHeaderCellDef> Discounted Price </th>
+            <td mat-cell *matCellDef="let element"> {{element.productPrice}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Action">
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-raised-button color="warn" (click)="delete(element.cartId)">Delete</button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>
