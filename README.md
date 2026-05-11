@@ -77,7 +77,7 @@ Tous les services doivent être `Up`. L'interface Eureka est accessible sur [htt
 
 ```bash
 cd ../e-commerce-frontend
-npm install
+npm install --legacy-peer-deps
 ng serve
 ```
 
