@@ -31,7 +31,7 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin123
     ports:
-      - "5433:5432"
+      - "5436:5432"
     volumes:
       - postgres-product-data:/var/lib/postgresql/data
     shm_size: 256mb
