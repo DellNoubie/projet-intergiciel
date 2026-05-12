@@ -1,5 +1,94 @@
 services:
 
+  # ─── PostgreSQL Databases ────────────────────────────────────────
+  postgres-auth:
+    image: postgres:15-alpine
+    container_name: postgres-auth
+    environment:
+      POSTGRES_DB: auth_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-auth-data:/var/lib/postgresql/data
+    shm_size: 256mb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d auth_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
+  postgres-product:
+    image: postgres:15-alpine
+    container_name: postgres-product
+    environment:
+      POSTGRES_DB: product_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-product-data:/var/lib/postgresql/data
+    shm_size: 256mb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d product_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
+  postgres-order:
+    image: postgres:15-alpine
+    container_name: postgres-order
+    environment:
+      POSTGRES_DB: order_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres-order-data:/var/lib/postgresql/data
+    shm_size: 256mb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d order_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
+  postgres-payment:
+    image: postgres:15-alpine
+    container_name: postgres-payment
+    environment:
+      POSTGRES_DB: payment_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres-payment-data:/var/lib/postgresql/data
+    shm_size: 256mb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d payment_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - microservices-network
+
   # ─── Service Registry ────────────────────────────────────────────
   eureka-server:
     build:
@@ -7,12 +96,13 @@ services:
     container_name: eureka-server
     ports:
       - "8761:8761"
+    restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://localhost:8761/actuator/health | grep -q UP || exit 1"]
-      interval: 15s
-      timeout: 5s
-      retries: 10
-      start_period: 300s
+      interval: 10s
+      timeout: 10s
+      retries: 60
+      start_period: 180s
     networks:
       - microservices-network
 
@@ -29,7 +119,7 @@ services:
     depends_on:
       eureka-server:
         condition: service_healthy
-    restart: on-failure
+    restart: unless-stopped
     networks:
       - microservices-network
 
@@ -43,10 +133,15 @@ services:
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
       JWT_SECRET: 5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-auth:5432/auth_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin123
     depends_on:
       eureka-server:
         condition: service_healthy
-    restart: on-failure
+      postgres-auth:
+        condition: service_healthy
+    restart: unless-stopped
     networks:
       - microservices-network
 
@@ -59,10 +154,15 @@ services:
       - "8083:8083"
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-product:5432/product_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin123
     depends_on:
       eureka-server:
         condition: service_healthy
-    restart: on-failure
+      postgres-product:
+        condition: service_healthy
+    restart: unless-stopped
     networks:
       - microservices-network
 
@@ -75,10 +175,15 @@ services:
       - "8084:8084"
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-order:5432/order_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin123
     depends_on:
       eureka-server:
         condition: service_healthy
-    restart: on-failure
+      postgres-order:
+        condition: service_healthy
+    restart: unless-stopped
     networks:
       - microservices-network
 
@@ -91,12 +196,17 @@ services:
       - "8085:8085"
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-payment:5432/payment_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin123
       RAZORPAY_KEY_ID: rzp_test_AXBzvN2fkD4ESK
       RAZORPAY_KEY_SECRET: bsZmiVD7p1GMo6hAWiy4SHSH
     depends_on:
       eureka-server:
         condition: service_healthy
-    restart: on-failure
+      postgres-payment:
+        condition: service_healthy
+    restart: unless-stopped
     networks:
       - microservices-network
 
@@ -112,7 +222,7 @@ services:
     depends_on:
       eureka-server:
         condition: service_healthy
-    restart: on-failure
+    restart: unless-stopped
     networks:
       - microservices-network
 
@@ -120,3 +230,14 @@ services:
 networks:
   microservices-network:
     driver: bridge
+
+# ─── Volumes ─────────────────────────────────────────────────────
+volumes:
+  postgres-auth-data:
+    driver: local
+  postgres-product-data:
+    driver: local
+  postgres-order-data:
+    driver: local
+  postgres-payment-data:
+    driver: local
