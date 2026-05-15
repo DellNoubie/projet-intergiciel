@@ -1,50 +1,52 @@
-<div class="container mt-5">
-    <div align="right" class="mb-3">
-        <button (click)="checkout()"
-                color="primary"
-                mat-raised-button
-                [disabled]="cartDetails.length === 0">
-            Checkout
+<div class="cart-page">
+  <div class="page-header">
+    <h1 class="page-title">Mon panier <span class="title-bar"></span></h1>
+  </div>
+
+  <!-- Panier vide -->
+  <div class="cart-empty" *ngIf="cartDetails.length === 0">
+    <mat-icon class="cart-empty__icon">shopping_cart</mat-icon>
+    <h2 class="cart-empty__title">Votre panier est vide</h2>
+    <p class="cart-empty__text">Parcourez nos produits et ajoutez des articles a votre panier.</p>
+    <a routerLink="/" class="cart-empty__cta">Parcourir le catalogue</a>
+  </div>
+
+  <!-- Contenu panier -->
+  <div class="cart-layout" *ngIf="cartDetails.length > 0">
+
+    <div class="cart-items">
+      <div class="cart-item" *ngFor="let element of cartDetails">
+        <div class="cart-item__thumb"></div>
+        <div class="cart-item__details">
+          <p class="cart-item__name">{{element.productName}}</p>
+          <p class="cart-item__price">Rs. {{element.productPrice}}</p>
+        </div>
+        <button class="cart-item__delete" (click)="delete(element.cartId)" title="Supprimer">
+          <mat-icon>delete_outline</mat-icon>
         </button>
+      </div>
     </div>
 
-    <div *ngIf="cartDetails.length === 0" class="text-center mt-4">
-        <p>Votre panier est vide.</p>
+    <div class="cart-summary">
+      <h2 class="cart-summary__title">Recapitulatif de commande</h2>
+
+      <div class="cart-summary__line">
+        <span>Nombre d'articles</span>
+        <span class="cart-summary__val">{{cartDetails.length}}</span>
+      </div>
+      <div class="cart-summary__line cart-summary__line--total">
+        <span>Total estimatif</span>
+        <span class="cart-summary__total">—</span>
+      </div>
+
+      <button class="cart-summary__checkout"
+              (click)="checkout()"
+              [disabled]="cartDetails.length === 0">
+        Passer la commande
+      </button>
+
+      <a routerLink="/" class="cart-summary__continue">Continuer mes achats</a>
     </div>
 
-    <table *ngIf="cartDetails.length > 0"
-           mat-table
-           [dataSource]="cartDetails"
-           class="mat-elevation-z8">
-
-        <ng-container matColumnDef="Name">
-            <th mat-header-cell *matHeaderCellDef> Name </th>
-            <td mat-cell *matCellDef="let element"> {{element.productName}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Description">
-            <th mat-header-cell *matHeaderCellDef> Description </th>
-            <td mat-cell *matCellDef="let element"> — </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Price">
-            <th mat-header-cell *matHeaderCellDef> Price </th>
-            <td mat-cell *matCellDef="let element"> {{element.productPrice}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Discounted Price">
-            <th mat-header-cell *matHeaderCellDef> Discounted Price </th>
-            <td mat-cell *matCellDef="let element"> {{element.productPrice}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Action">
-            <th mat-header-cell *matHeaderCellDef> Action </th>
-            <td mat-cell *matCellDef="let element">
-                <button mat-raised-button color="warn" (click)="delete(element.cartId)">Delete</button>
-            </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+  </div>
 </div>

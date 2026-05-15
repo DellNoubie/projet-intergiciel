@@ -15,8 +15,9 @@ export class UserService {
   ) {}
 
   public register(registerData) {
-    const payload = { ...registerData, userEmail: registerData.userName };
-    return this.httpclient.post(this.PATH_OF_API + '/registerNewUser', payload);
+    return this.httpclient.post(this.PATH_OF_API + '/registerNewUser', registerData, {
+      headers: this.requestHeader,
+    });
   }
 
   public login(loginData) {

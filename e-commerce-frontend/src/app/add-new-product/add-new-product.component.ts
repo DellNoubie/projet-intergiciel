@@ -15,12 +15,24 @@ import { ProductService } from "../_services/product.service";
 export class AddNewProductComponent implements OnInit {
   isNewProduct = true;
 
+  categories = [
+    'Electronique',
+    'Vetements',
+    'Maison & Decoration',
+    'Sport & Loisirs',
+    'Beaute & Sante',
+    'Alimentation',
+    'Livres & Medias',
+    'Autres',
+  ];
+
   product: Product = {
     productId: null,
     productName: "",
     productDescription: "",
     productDiscountedPrice: 0,
     productActualPrice: 0,
+    productCategory: "",
     productImages: [],
   };
 

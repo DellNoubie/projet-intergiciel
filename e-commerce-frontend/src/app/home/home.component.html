@@ -1,41 +1,69 @@
-<div class="container mt-5">
-
-   <div class="container mt-5 d-flex justify-content-between align-items-center">
-      <mat-form-field appearance="outline" class="flex-grow-1">
-        <mat-label>Search any product</mat-label>
+<div class="home-search-bar">
+  <div class="search-inner">
+    <h1 class="search-headline">Decouvrez notre catalogue</h1>
+    <p class="search-tagline">Des milliers de produits livres rapidement</p>
+    <div class="search-box-wrap">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Rechercher un produit</mat-label>
         <input matInput
                #searchkeyword
                (keyup)="searchByKeyword(searchkeyword.value)"
                name="searchKey"
                id="searchKey"
-               placeholder="Search any product">
-        <mat-hint>Search any product</mat-hint>
+               placeholder="Nom, categorie, description...">
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
     </div>
+  </div>
+</div>
 
-   <div class="product-grid">
-      <div class="product-card" *ngFor="let p of productDetails">
-         <div class="image-container">
-            <img class="home-page-product-image"
-                 [src]="p.productImages && p.productImages.length > 0 ? p.productImages[0].url : 'data:image/svg+xml;charset=UTF-8,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%22200%22 height%3D%22200%22%3E%3Crect width%3D%22200%22 height%3D%22200%22 fill%3D%22%23f5f5f5%22%2F%3E%3Ctext x%3D%22100%22 y%3D%22110%22 font-size%3D%2213%22 text-anchor%3D%22middle%22 fill%3D%22%23aaa%22%3ESans image%3C%2Ftext%3E%3C%2Fsvg%3E'"
-                 alt="">
-         </div>
-         <div class="card-body">
-            <p class="product-name"><b>{{p.productName}}</b></p>
-            <p class="product-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos sed eaque molestias iste repudiandae in quos distinctio rem excepturi.</p>
-            <p class="product-price">
-               <b>Rs. {{p.productDiscountedPrice}}</b>&nbsp;
-               <b style="text-decoration: line-through; color: gray;">{{p.productActualPrice}}</b>
-            </p>
-            <button type="button" mat-raised-button color="warn" (click)="showProductDetails(p.productId)">View Details</button>
-         </div>
+<div class="home-body">
+  <div class="products-header">
+    <h2 class="products-title">Nos produits <span class="products-accent"></span></h2>
+    <p class="products-count">{{filteredProducts.length}} article(s) disponible(s)</p>
+  </div>
+
+  <div class="category-filters">
+    <button class="cat-chip"
+            [class.cat-chip--active]="selectedCategory === ''"
+            (click)="filterByCategory('')">
+      Tous
+    </button>
+    <button class="cat-chip"
+            *ngFor="let cat of categories"
+            [class.cat-chip--active]="selectedCategory === cat"
+            (click)="filterByCategory(cat)">
+      {{cat}}
+    </button>
+  </div>
+
+  <div class="product-grid">
+    <div class="product-card" *ngFor="let p of filteredProducts">
+      <div class="product-card__img-wrap">
+        <img class="product-card__img"
+             [src]="p.productImages && p.productImages.length > 0
+               ? p.productImages[0].url
+               : 'data:image/svg+xml;charset=UTF-8,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 width%3D%22400%22 height%3D%22300%22%3E%3Crect width%3D%22400%22 height%3D%22300%22 fill%3D%22%23f1f5f9%22%2F%3E%3Ctext x%3D%22200%22 y%3D%22155%22 font-size%3D%2215%22 text-anchor%3D%22middle%22 fill%3D%22%2394a3b8%22%3EAucune image%3C%2Ftext%3E%3C%2Fsvg%3E'"
+             alt="{{p.productName}}">
       </div>
-   </div>
-
-    <div class="text-center mt-5" style="padding-bottom: 100px;" *ngIf="showLoadButton">
-      <button type="button" mat-raised-button color="primary" (click)="loadMoreProduct()"> Load more</button>
+      <div class="product-card__body">
+        <span class="product-card__category" *ngIf="p.productCategory">{{p.productCategory}}</span>
+        <h3 class="product-card__name">{{p.productName}}</h3>
+        <p class="product-card__desc">{{p.productDescription}}</p>
+        <div class="product-card__pricing">
+          <span class="product-card__price">Rs. {{p.productDiscountedPrice}}</span>
+          <span class="product-card__old" *ngIf="p.productActualPrice !== p.productDiscountedPrice">
+            Rs. {{p.productActualPrice}}
+          </span>
+        </div>
+        <button class="product-card__btn" (click)="showProductDetails(p.productId)">
+          Voir le detail
+        </button>
+      </div>
     </div>
+  </div>
 
-    <div class="mt-5"></div>
+  <div class="load-more" *ngIf="showLoadButton">
+    <button class="btn-load" (click)="loadMoreProduct()">Charger plus de produits</button>
+  </div>
 </div>

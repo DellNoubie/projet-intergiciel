@@ -1,5 +1,23 @@
-<div class="container mt-5">
-    <div class="card text-center" style="color: green; padding: 20px;">
-        <h1>You are Admin</h1>
+<div class="welcome-page">
+  <div class="welcome-card">
+    <div class="welcome-icon">
+      <mat-icon>admin_panel_settings</mat-icon>
     </div>
+    <h1 class="welcome-title">Tableau de bord Admin</h1>
+    <p class="welcome-text">Bienvenue dans l'espace d'administration. Utilisez le menu de navigation pour gerer les produits et les commandes.</p>
+    <div class="welcome-links">
+      <a routerLink="/showProductDetails" class="welcome-link">
+        <mat-icon>inventory_2</mat-icon>
+        Gerer les produits
+      </a>
+      <a routerLink="/orderInformation" class="welcome-link">
+        <mat-icon>receipt_long</mat-icon>
+        Gerer les commandes
+      </a>
+      <a routerLink="/addNewProduct" class="welcome-link welcome-link--accent">
+        <mat-icon>add_circle</mat-icon>
+        Ajouter un produit
+      </a>
+    </div>
+  </div>
 </div>

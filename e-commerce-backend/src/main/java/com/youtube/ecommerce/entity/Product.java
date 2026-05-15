@@ -14,6 +14,7 @@ public class Product {
     private String productDescription;
     private Double productDiscountedPrice;
     private Double productActualPrice;
+    private String productCategory;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "product_images",
             joinColumns = {
@@ -72,5 +73,13 @@ public class Product {
 
     public void setProductActualPrice(Double productActualPrice) {
         this.productActualPrice = productActualPrice;
+    }
+
+    public String getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(String productCategory) {
+        this.productCategory = productCategory;
     }
 }

@@ -1,168 +1,177 @@
-# E-Commerce Microservices
+# E-Commerce — Application Full Stack
 
-Application e-commerce complète basée sur une architecture microservices, avec un frontend Angular et un backend Spring Boot déployé via Docker.
+Application e-commerce complète avec un frontend **Angular** et un backend **Spring Boot** déployé via Docker.
 
 ---
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                  Angular Frontend (:4200)                │
-└──────────────────────────┬──────────────────────────────┘
-                           │ HTTP → localhost:8090
-┌──────────────────────────▼──────────────────────────────┐
-│              API Gateway (:8080 → exposé :8090)          │
-│         JWT validation · routing · CORS                  │
-└──┬──────────┬──────────┬──────────┬──────────┬──────────┘
-   │          │          │          │          │
-   ▼          ▼          ▼          ▼          ▼
- Auth      Product    Order     Payment    Report
-(:8081)   (:8082)   (:8083)   (:8085)   (:8086)
-   │          │          │          │          │
-   └──────────┴──────────┴──────────┘          │
-                    Eureka Server (:8761)       │
-                                               │
-                              JasperReports (PDF)
+Angular Frontend (:4200)
+        │
+        │ HTTP → localhost:8090
+        ▼
+┌─────────────────────────────────────────┐
+│           e-commerce-backend            │
+│                                         │
+│  auth-service       :8090  ← point      │
+│  user-service       :8081    d'entrée   │
+│  product-add        :8082    unique     │
+│  account-creation   :8083    du         │
+│  invoice-service    :8084    frontend   │
+│  image-service      :8085               │
+│  product-display    :8086               │
+│                                         │
+│  PostgreSQL (plusieurs bases)           │
+└─────────────────────────────────────────┘
 ```
-
-### Microservices
-
-| Service | Port interne | Rôle |
-|---|---|---|
-| `api-gateway` | 8080 (→ 8090) | Routage, validation JWT, CORS |
-| `eureka-server` | 8761 | Service discovery |
-| `auth-service` | 8081 | Authentification, génération JWT |
-| `product-service` | 8082 | Catalogue produits, images |
-| `order-service` | 8083 | Commandes, panier |
-| `payment-service` | 8085 | Paiement Razorpay |
-| `report-service` | 8086 | Rapports PDF (JasperReports) |
 
 ---
 
 ## Prérequis
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (avec Docker Compose)
-- [Node.js 18+](https://nodejs.org/) et npm
-- [Java 17+](https://adoptium.net/) et Maven 3.8+ (pour rebuilder les services)
-- Git
+| Outil | Version minimale | Vérification |
+|---|---|---|
+| [Docker Desktop](https://www.docker.com/products/docker-desktop/) | 20+ | `docker --version` |
+| [Node.js](https://nodejs.org/) | 16 ou 18 (LTS) | `node --version` |
+| npm | 8+ (inclus avec Node) | `npm --version` |
+| Git | toute version | `git --version` |
+
+> Java et Maven **ne sont pas nécessaires** : les JARs sont déjà compilés dans le dépôt.
 
 ---
 
-## Démarrage rapide
+## Lancer le projet
 
-### 1. Cloner le projet
+### 1. Cloner le dépôt
 
 ```bash
 git clone <url-du-repo>
 cd projet-intergiciel
 ```
 
-### 2. Démarrer les microservices (Docker)
+### 2. Démarrer le backend (Docker)
+
+Le fichier `docker-compose.yml` se trouve dans `e-commerce-backend`.
 
 ```bash
-cd ecommerce-microservices
-docker-compose up -d
+cd e-commerce-backend
+docker compose up -d
 ```
 
-Attendre ~2 minutes que tous les services démarrent. Vérifier l'état :
+> Sur les anciennes versions de Docker, utiliser `docker-compose up -d` (avec le tiret).
+
+Attendre ~1-2 minutes, puis vérifier que tous les containers sont `Up` :
 
 ```bash
-docker-compose ps
+docker compose ps
 ```
 
-Tous les services doivent être `Up`. L'interface Eureka est accessible sur [http://localhost:8761](http://localhost:8761).
+Les services doivent tous apparaître avec le statut `Up`. Le point d'entrée principal du frontend est **[http://localhost:8090](http://localhost:8090)**.
 
 ### 3. Démarrer le frontend Angular
 
+Ouvrir un **nouveau terminal** et se placer dans le dossier frontend :
+
 ```bash
-cd ../e-commerce-frontend
+cd e-commerce-frontend
+```
+
+Installer les dépendances (à faire une seule fois) :
+
+```bash
 npm install --legacy-peer-deps
+```
+
+Lancer le serveur de développement :
+
+```bash
+npm start
+```
+
+> **Important** : utiliser `npm start` et **non** `ng serve`. Le script `npm start` inclut l'option `--openssl-legacy-provider` requise par cette version d'Angular avec Node 17+. Sans cela, la compilation échoue.
+
+L'application est disponible sur **[http://localhost:4200](http://localhost:4200)**.
+
+---
+
+## Problèmes fréquents
+
+### Erreur OpenSSL au démarrage du frontend
+
+```
+Error: error:0308010C:digital envelope routines::unsupported
+```
+
+**Cause** : Node.js 17+ a désactivé des algorithmes OpenSSL legacy utilisés par l'ancienne version de webpack d'Angular.
+
+**Solution** : toujours lancer le frontend avec `npm start` (pas `ng serve`). Si on veut utiliser `ng serve` directement, définir la variable d'environnement avant :
+
+```bash
+# Windows PowerShell
+$env:NODE_OPTIONS = "--openssl-legacy-provider"
+ng serve
+
+# Windows CMD
+set NODE_OPTIONS=--openssl-legacy-provider
+ng serve
+
+# macOS / Linux
+export NODE_OPTIONS=--openssl-legacy-provider
 ng serve
 ```
 
-L'application est disponible sur [http://localhost:4200](http://localhost:4200).
+### Le frontend affiche "0 articles disponibles"
 
----
+Le backend met quelques secondes à être prêt après `docker compose up`. Attendre 1-2 minutes et rafraîchir la page.
 
-## Comptes de test
+### Un container Docker est en erreur (`Exit` ou `Restarting`)
 
-| Rôle | Identifiant | Mot de passe |
-|---|---|---|
-| Admin | *(compte créé à l'inscription avec rôle Admin)* | — |
-| Utilisateur | *(compte créé à l'inscription)* | — |
-
-> Pour créer un compte admin, s'inscrire via l'interface puis modifier le rôle directement en base de données, ou utiliser l'endpoint `/registerNewUser` avec le champ `role: "Admin"`.
-
----
-
-## Fonctionnalités implémentées
-
-### Authentification
-- Inscription et connexion avec JWT
-- Rôles : `User` et `Admin`
-- Protection des routes Angular via guards
-- Propagation des headers d'auth (`X-Auth-User`, `X-Auth-Role`) entre microservices via Feign interceptor
-
-### Catalogue produits
-- Affichage paginé des produits (12 par page)
-- Recherche par nom en temps réel
-- Vue détail produit avec images
-- Ajout/suppression de produits (Admin)
-- Grille responsive (4 → 3 → 2 → 1 colonne)
-
-### Panier
-- Ajout de produits au panier
-- Suppression d'articles
-- Checkout depuis le panier
-
-### Commandes
-- Passage de commande (achat direct ou depuis le panier)
-- Saisie de l'adresse de livraison
-- Historique des commandes (utilisateur)
-- Gestion des commandes avec filtre par statut : All / Placed / Delivered (Admin)
-- Marquage comme livré (Admin)
-
-### Paiement (Razorpay)
-- Création d'un ordre de paiement côté backend
-- Popup de paiement Razorpay (carte, UPI, netbanking)
-- Vérification de signature HMAC-SHA256 après paiement
-- Mise à jour du statut de commande après paiement confirmé
-
-### Rapports PDF
-- Rapport du catalogue produits (JasperReports)
-- Rapport des commandes (JasperReports)
-- Téléchargement direct depuis l'interface admin
-
----
-
-## Configuration Razorpay (paiement de test)
-
-Les clés de test sont configurées dans `payment-service/src/main/resources/application.yml` :
-
-```yaml
-razorpay:
-  key:
-    id: rzp_test_AXBzvN2fkD4ESK
-    secret: bsZmiVD7p1GMo6hAWiy4SHSH
-```
-
-Pour tester un paiement, utiliser **UPI** avec l'identifiant `success@razorpay` dans la popup Razorpay.
-
----
-
-## Rebuilder un microservice après modification
+Consulter les logs du service concerné :
 
 ```bash
-# Depuis le dossier du service (ex: payment-service)
-cd ecommerce-microservices/payment-service
-mvn clean package -DskipTests
-
-# Depuis le dossier ecommerce-microservices
-cd ..
-docker-compose build payment-service
-docker-compose up -d payment-service
+docker compose logs auth-service
 ```
+
+Remplacer `auth-service` par le nom du service en erreur (`user-service`, `product-add-service`, etc.).
+
+### Conflit de port (port déjà utilisé)
+
+Si le port 8090 est déjà occupé par un autre processus :
+
+```bash
+# Windows PowerShell
+netstat -ano | findstr :8090
+
+# macOS / Linux
+lsof -i :8090
+```
+
+---
+
+## Comptes utilisateurs
+
+L'inscription se fait directement depuis l'interface sur [http://localhost:4200/register](http://localhost:4200/register).
+
+Par défaut, tout nouveau compte a le rôle **User**. Pour obtenir les droits **Admin** :
+
+1. S'inscrire via l'interface
+2. Aller dans la table `roles` et `user_role` de la base `auth_db` et affecter le rôle Admin au compte
+
+---
+
+## Fonctionnalités
+
+| Fonctionnalité | User | Admin |
+|---|:---:|:---:|
+| Parcourir le catalogue | ✓ | ✓ |
+| Rechercher un produit | ✓ | ✓ |
+| Ajouter au panier | ✓ | ✓ |
+| Passer une commande | ✓ | ✓ |
+| Consulter ses commandes | ✓ | ✓ |
+| Ajouter / modifier un produit | — | ✓ |
+| Gérer toutes les commandes | — | ✓ |
+| Marquer une commande comme livrée | — | ✓ |
 
 ---
 
@@ -170,31 +179,65 @@ docker-compose up -d payment-service
 
 ```
 projet-intergiciel/
-├── e-commerce-frontend/          # Application Angular
-│   └── src/app/
-│       ├── _model/               # Interfaces TypeScript
-│       ├── _services/            # Services HTTP Angular
-│       ├── home/                 # Page d'accueil (grille produits)
-│       ├── cart/                 # Panier
-│       ├── buy-product/          # Tunnel de commande + paiement
-│       ├── order-details/        # Gestion commandes (Admin)
-│       └── ...
 │
-└── ecommerce-microservices/
-    ├── docker-compose.yml        # Orchestration de tous les services
+├── e-commerce-frontend/          # Application Angular 21
+│   ├── src/app/
+│   │   ├── _model/               # Interfaces TypeScript (Product, User...)
+│   │   ├── _services/            # Services HTTP Angular
+│   │   ├── home/                 # Page d'accueil — grille produits
+│   │   ├── login/                # Connexion
+│   │   ├── register/             # Inscription
+│   │   ├── product-view-details/ # Détail produit
+│   │   ├── cart/                 # Panier
+│   │   ├── buy-product/          # Tunnel de commande
+│   │   ├── my-orders/            # Historique commandes (User)
+│   │   ├── order-details/        # Gestion commandes (Admin)
+│   │   ├── add-new-product/      # Ajout / modification produit (Admin)
+│   │   └── show-product-details/ # Liste produits (Admin)
+│   └── package.json
+│
+├── e-commerce-backend/           # Backend Spring Boot (JARs pré-compilés)
+│   ├── Docker-compose.yml        # Orchestration des services + PostgreSQL
+│   ├── auth-service.jar          # Authentification JWT — port 8090
+│   ├── user-service.jar          # Gestion utilisateurs — port 8081
+│   ├── product-add-service.jar   # Ajout produits — port 8082
+│   ├── account-creation-service.jar  # Création de comptes — port 8083
+│   ├── invoice-service.jar       # Facturation — port 8084
+│   ├── image-service.jar         # Gestion images — port 8085
+│   └── product-display-service.jar   # Affichage produits — port 8086
+│
+└── ecommerce-microservices/      # Version microservices avancée (Spring Cloud)
+    ├── docker-compose.yml
     ├── api-gateway/              # Spring Cloud Gateway
-    ├── eureka-server/            # Netflix Eureka
-    ├── auth-service/             # JWT + Spring Security
-    ├── product-service/          # Catalogue + images
-    ├── order-service/            # Commandes + panier (H2 en mémoire)
-    ├── payment-service/          # Razorpay (H2 en mémoire)
-    └── report-service/           # JasperReports
+    ├── eureka-server/            # Service discovery
+    ├── auth-service/
+    ├── product-service/
+    ├── order-service/
+    ├── payment-service/
+    └── report-service/
 ```
 
 ---
 
-## Notes importantes
+## Arrêter le projet
 
-- Les bases de données `order-service` et `payment-service` utilisent **H2 en mémoire** (`create-drop`). Les données sont perdues à chaque redémarrage du container.
-- Le `product-service` et `auth-service` utilisent une base persistante (selon la config Docker Compose).
-- Le démarrage complet de tous les services peut prendre **2 à 5 minutes** selon la machine.
+```bash
+# Arrêter les containers sans supprimer les données
+cd e-commerce-backend
+docker compose down
+
+# Arrêter ET supprimer les volumes (repart de zéro)
+docker compose down -v
+```
+
+---
+
+## Technologies utilisées
+
+| Couche | Technologie |
+|---|---|
+| Frontend | Angular 21, Angular Material, Bootstrap 5 |
+| Backend | Spring Boot 2.4, Spring Security, JWT |
+| Base de données | PostgreSQL 15 (via Docker) |
+| Conteneurisation | Docker, Docker Compose |
+| Build backend | Maven (JARs pré-compilés inclus) |

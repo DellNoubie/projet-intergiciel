@@ -1,4 +1,59 @@
-/* You can add global styles to this file, and also import other style files */
+/* ══════════════════════════════════════════
+   DESIGN SYSTEM — E-Commerce Platform
+   ══════════════════════════════════════════ */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+:root {
+  --nav-bg:     #0f172a;
+  --nav-hover:  #1e293b;
+  --accent:     #f97316;
+  --accent-dk:  #ea580c;
+  --danger:     #ef4444;
+  --danger-dk:  #dc2626;
+  --success:    #16a34a;
+  --page-bg:    #f1f5f9;
+  --surface:    #ffffff;
+  --border:     #e2e8f0;
+  --text:       #0f172a;
+  --text-2:     #475569;
+  --text-3:     #94a3b8;
+  --radius:     8px;
+  --radius-lg:  12px;
+  --radius-xl:  16px;
+  --shadow-sm:  0 1px 3px rgba(0,0,0,.08);
+  --shadow:     0 4px 16px rgba(0,0,0,.08);
+  --shadow-lg:  0 12px 40px rgba(0,0,0,.1);
+  --t:          0.2s ease;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', 'Roboto', 'Helvetica Neue', sans-serif;
+  background: var(--page-bg);
+  color: var(--text);
+}
+
+/* ── Mat-table overrides (global) ── */
+.mat-header-row {
+  background: var(--nav-bg) !important;
+}
+.mat-header-cell {
+  color: rgba(255,255,255,.85) !important;
+  font-size: .7rem !important;
+  font-weight: 700 !important;
+  letter-spacing: .09em !important;
+  text-transform: uppercase !important;
+  border-bottom: none !important;
+}
+.mat-row:hover {
+  background: #f8fafc !important;
+  transition: background .15s;
+}
+.mat-cell {
+  color: var(--text-2) !important;
+  font-size: .875rem !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+.mat-elevation-z8 {
+  box-shadow: var(--shadow) !important;
+}

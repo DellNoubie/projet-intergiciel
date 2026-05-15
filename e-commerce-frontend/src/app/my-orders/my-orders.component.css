@@ -1,3 +1,97 @@
-table {
-    width: 100%;
+.orders-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 5rem;
 }
+
+.page-header { margin-bottom: 2rem; }
+
+.page-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 .2rem;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+.title-bar {
+  display: inline-block;
+  width: 36px;
+  height: 3px;
+  background: #f97316;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+.page-subtitle {
+  color: #64748b;
+  font-size: .875rem;
+  margin: .4rem 0 0;
+}
+
+.table-card {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,.05);
+}
+
+.orders-table { width: 100%; }
+
+.cell-primary {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.cell-qty {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: #f1f5f9;
+  border-radius: 6px;
+  font-size: .8rem;
+  font-weight: 700;
+  color: #475569;
+}
+
+.cell-amount {
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: .28rem .75rem;
+  border-radius: 9999px;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.status-placed    { background: #dbeafe; color: #1d4ed8; }
+.status-delivered { background: #dcfce7; color: #15803d; }
+
+.btn-invoice {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .4rem .9rem;
+  background: #0f172a;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: .78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .18s;
+  font-family: inherit;
+}
+.btn-invoice mat-icon { font-size: .9rem; width: .9rem; height: .9rem; }
+.btn-invoice:hover { background: #f97316; }

@@ -1,5 +1,16 @@
-<div class="container mt-5">
-    <div class="card p-5 text-center">
-       <h1>Your order is place successfully. It will get delivered to you within 4-5 business days.</h1>
+<div class="success-page">
+  <div class="success-card">
+    <div class="success-icon-wrap">
+      <mat-icon class="success-icon">check_circle</mat-icon>
     </div>
+    <h1 class="success-title">Commande confirmee !</h1>
+    <p class="success-message">
+      Votre commande a ete passee avec succes.<br>
+      Elle sera livree dans un delai de <strong>4 a 5 jours ouvrables</strong>.
+    </p>
+    <div class="success-actions">
+      <a routerLink="/myOrders" class="btn-primary-link">Voir mes commandes</a>
+      <a routerLink="/" class="btn-ghost-link">Continuer mes achats</a>
+    </div>
+  </div>
 </div>

@@ -1,0 +1,87 @@
+.success-page {
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: #f1f5f9;
+}
+
+.success-card {
+  text-align: center;
+  max-width: 500px;
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  padding: 3.5rem 2.5rem;
+  box-shadow: 0 8px 40px rgba(0,0,0,.08);
+}
+
+.success-icon-wrap {
+  margin-bottom: 1.25rem;
+}
+
+.success-icon {
+  font-size: 4.5rem;
+  width: 4.5rem;
+  height: 4.5rem;
+  color: #16a34a;
+}
+
+.success-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 .85rem;
+}
+
+.success-message {
+  color: #64748b;
+  line-height: 1.75;
+  margin: 0 0 2.25rem;
+  font-size: .9rem;
+}
+
+.success-message strong {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.success-actions {
+  display: flex;
+  gap: .75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary-link {
+  padding: .75rem 1.75rem;
+  background: #f97316;
+  color: #fff;
+  border-radius: 9px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: .875rem;
+  transition: background .2s, transform .15s;
+}
+.btn-primary-link:hover {
+  background: #ea580c;
+  transform: translateY(-1px);
+}
+
+.btn-ghost-link {
+  padding: .75rem 1.75rem;
+  background: transparent;
+  color: #0f172a;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 9px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: .875rem;
+  transition: all .2s;
+}
+.btn-ghost-link:hover {
+  background: #0f172a;
+  color: #fff;
+  border-color: #0f172a;
+}

@@ -1,93 +1,81 @@
-<div class="container mt-5">
-    <div class="card p-3">
-        <div class="row">
-            <div class="col-6">
+<div class="checkout-page">
+  <div class="page-header">
+    <h1 class="page-title">Finaliser la commande <span class="title-bar"></span></h1>
+  </div>
 
-                <form #orderForm="ngForm"
-                      (ngSubmit)="createTransactionAndPlaceOrder(orderForm)">
+  <div class="checkout-layout">
 
-                    <mat-form-field appearance="outline"
-                                    class="w-100">
-                        <mat-label>Full name</mat-label>
-                        <input matInput
-                               placeholder="Full name"
-                               [(ngModel)]="orderDetails.fullName"
-                               name="fullName">
-                    </mat-form-field>
+    <!-- Formulaire livraison -->
+    <div class="checkout-card">
+      <h2 class="checkout-card__title">
+        <mat-icon>local_shipping</mat-icon>
+        Informations de livraison
+      </h2>
 
-                    <mat-form-field appearance="outline"
-                                    class="w-100">
-                        <mat-label>Full address</mat-label>
-                        <input matInput
-                               placeholder="Full address"
-                               [(ngModel)]="orderDetails.fullAddress"
-                               name="fullAddress">
-                    </mat-form-field>
+      <form #orderForm="ngForm" (ngSubmit)="createTransactionAndPlaceOrder(orderForm)">
 
-                    <mat-form-field appearance="outline"
-                                    class="w-100">
-                        <mat-label>Contact number</mat-label>
-                        <input matInput
-                               placeholder="Contact number"
-                               [(ngModel)]="orderDetails.contactNumber"
-                               name="contactNumber">
-                    </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Nom complet</mat-label>
+          <input matInput placeholder="Prenom et nom" [(ngModel)]="orderDetails.fullName" name="fullName">
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
 
-                    <mat-form-field appearance="outline"
-                                    class="w-100">
-                        <mat-label>Alternate contact number</mat-label>
-                        <input matInput
-                               placeholder="Alternate contact number"
-                               [(ngModel)]="orderDetails.alternateContactNumber"
-                               name="alternateContactNumber">
-                    </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Adresse complete</mat-label>
+          <input matInput placeholder="Rue, ville, code postal" [(ngModel)]="orderDetails.fullAddress" name="fullAddress">
+          <mat-icon matSuffix>location_on</mat-icon>
+        </mat-form-field>
 
-                    <div align="right">
-                        <button type="submit" mat-stroked-button color="primary">Place Order</button>
-                    </div>
-                </form>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Numero de telephone</mat-label>
+          <input matInput placeholder="+33 6 XX XX XX XX" [(ngModel)]="orderDetails.contactNumber" name="contactNumber">
+          <mat-icon matSuffix>phone</mat-icon>
+        </mat-form-field>
 
-            </div>
-            <div class="col-6">
-                <table class="table">
-                    <thead class="thead">
-                        <tr>
-                            <th>Name</th>
-                            <th>Amount</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody class="tbody">
-                        <tr *ngFor="let product of productDetails">
-                            <td>{{product.productName}}</td>
-                            <td>{{product.productDiscountedPrice}}</td>
-                            <td>
-                                <select 
-                                #quantity
-                                class="form-select"
-                                [ngModel]="getQuantityForProduct(product.productId)"
-                                (change)="onQuantityChanged(quantity.value, product.productId)"
-                                >
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                </select>
-                            </td>
-                            <td>
-                                {{getCalculatedTotal(product.productId, product.productDiscountedPrice)}}
-                            </td>
-                        </tr>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Numero alternatif (optionnel)</mat-label>
+          <input matInput placeholder="+33 6 XX XX XX XX" [(ngModel)]="orderDetails.alternateContactNumber" name="alternateContactNumber">
+          <mat-icon matSuffix>phone_in_talk</mat-icon>
+        </mat-form-field>
 
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td>Total</td>
-                            <td> {{getCalculatedGrandTotal()}} </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <button type="submit" class="checkout-submit">
+          <mat-icon>lock</mat-icon>
+          Confirmer et payer
+        </button>
+      </form>
     </div>
+
+    <!-- Recapitulatif -->
+    <div class="checkout-summary">
+      <h2 class="checkout-card__title">
+        <mat-icon>receipt_long</mat-icon>
+        Recapitulatif
+      </h2>
+
+      <div class="order-line" *ngFor="let product of productDetails">
+        <div class="order-line__info">
+          <p class="order-line__name">{{product.productName}}</p>
+          <p class="order-line__unit">Rs. {{product.productDiscountedPrice}} / unite</p>
+        </div>
+        <div class="order-line__qty-wrap">
+          <span class="qty-label">Qte</span>
+          <select class="qty-select"
+                  #quantity
+                  [ngModel]="getQuantityForProduct(product.productId)"
+                  (change)="onQuantityChanged(quantity.value, product.productId)">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </div>
+        <p class="order-line__subtotal">Rs. {{getCalculatedTotal(product.productId, product.productDiscountedPrice)}}</p>
+      </div>
+
+      <div class="order-total-row">
+        <span class="order-total-label">Total</span>
+        <span class="order-total-amount">Rs. {{getCalculatedGrandTotal()}}</span>
+      </div>
+    </div>
+
+  </div>
 </div>

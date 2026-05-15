@@ -1,36 +1,39 @@
-<div class="container mt-5">
-    <div class="card" style="padding: 20px;">
-        <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
-
-            <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Username</mat-label>
-                <input matInput
-                       ngModel
-                       name="userName"
-                       id="userName"
-                       placeholder="Username">
-                <mat-hint>Username</mat-hint>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Password</mat-label>
-                <input type="password"
-                    matInput
-                       ngModel
-                       name="userPassword"
-                       id="userPassword"
-                       placeholder="Password">
-                <mat-hint>Password</mat-hint>
-            </mat-form-field>
-
-            <button class="w-100" type="submit" mat-raised-button color="primary">Login</button>
-        </form>
-
-        
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="auth-brand-icon">S</div>
+      <h1 class="auth-title">Connexion</h1>
+      <p class="auth-subtitle">Bienvenue, connectez-vous pour continuer</p>
     </div>
-    <div class="text-center">
-        <br>
-        <button class="w-20" mat-raised-button type="button" (click)="registerUser()">Create an account</button>
+
+    <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+      <mat-form-field appearance="outline" class="auth-field">
+        <mat-label>Adresse e-mail</mat-label>
+        <input matInput
+               ngModel
+               name="userName"
+               id="userName"
+               placeholder="exemple@email.com">
+        <mat-icon matSuffix>email</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="auth-field">
+        <mat-label>Mot de passe</mat-label>
+        <input type="password"
+               matInput
+               ngModel
+               name="userPassword"
+               id="userPassword"
+               placeholder="Votre mot de passe">
+        <mat-icon matSuffix>lock</mat-icon>
+      </mat-form-field>
+
+      <button type="submit" class="auth-submit">Se connecter</button>
+    </form>
+
+    <div class="auth-footer">
+      <span>Pas encore de compte ?</span>
+      <button class="auth-link" type="button" (click)="registerUser()">Creer un compte</button>
     </div>
-        
+  </div>
 </div>

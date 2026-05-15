@@ -20,7 +20,7 @@
 //   showTable = false;
 //   pageNumber: number = 0;
 //   productDetails: Product[] = [];
-//   displayedColumns: string[] = ['Id', 'Product Name', 'description', 'Product Discounted Price', 'Product Actual Price', 'Actions'];
+//   displayedColumns: string[] = ['Id', 'Product Name', 'Category', 'description', 'Product Discounted Price', 'Product Actual Price', 'Actions'];
 
 //   constructor(private productService: ProductService,
 //     public imagesDialog: MatDialog,
@@ -127,7 +127,7 @@ export class ShowProductDetailsComponent implements OnInit, OnDestroy {
   showTable = false;
   pageNumber: number = 0;
   productDetails = new MatTableDataSource<Product>([]);
-  displayedColumns: string[] = ['Id', 'Product Name', 'description', 'Product Discounted Price', 'Product Actual Price', 'Actions'];
+  displayedColumns: string[] = ['Id', 'Product Name', 'Category', 'description', 'Product Discounted Price', 'Product Actual Price', 'Actions'];
   private subscription: Subscription = new Subscription();
 
   constructor(

@@ -36,6 +36,7 @@ import { CartComponent } from './cart/cart.component';
 import { MyOrdersComponent } from './my-orders/my-orders.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     MatTableModule,
     MatIconModule,
     MatDialogModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatSelectModule
   ],
   providers: [
     AuthGuard,

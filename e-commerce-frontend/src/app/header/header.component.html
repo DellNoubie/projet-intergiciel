@@ -1,22 +1,51 @@
-<mat-toolbar color="primary">
-  <span>
-    E-Commerce Application
-  </span>
+<header class="site-header">
+  <div class="header-inner">
 
-  <span class="space-buttons"></span>
-  <button *ngIf="! isLoggedIn()" routerLink="/login" mat-raised-button color="primary">
-    Login
-  </button>
-  <button *ngIf="isLoggedIn()" (click)="logout()" mat-raised-button color="warn">
-    Logout
-  </button>
-</mat-toolbar>
+    <a routerLink="/" class="brand-link">
+      <div class="brand-icon">S</div>
+      <span class="brand-name">ShopNow</span>
+    </a>
 
-<mat-toolbar color="primary" *ngIf="isLoggedIn()">
-  <button mat-raised-button color="primary" routerLink="/">Home</button>
-  <button *ngIf="!isAdmin()" mat-raised-button color="primary" routerLink="/cart">Cart</button>
-  <button *ngIf="!isAdmin()" mat-raised-button color="primary" routerLink="/myOrders">My Orders</button>
-  <button *ngIf="isAdmin()" mat-raised-button color="primary" routerLink="/addNewProduct">Add New Product</button>
-  <button *ngIf="isAdmin()" mat-raised-button color="primary" routerLink="/showProductDetails">Show Product Details</button>
-  <button *ngIf="isAdmin()" mat-raised-button color="primary" routerLink="/orderInformation">Order Information</button>
-</mat-toolbar>
+    <nav class="header-nav" *ngIf="isLoggedIn()">
+      <a routerLink="/"
+         routerLinkActive="nav-active"
+         [routerLinkActiveOptions]="{exact:true}"
+         class="nav-item">Accueil</a>
+      <a *ngIf="!isAdmin()"
+         routerLink="/cart"
+         routerLinkActive="nav-active"
+         class="nav-item">Panier</a>
+      <a *ngIf="!isAdmin()"
+         routerLink="/myOrders"
+         routerLinkActive="nav-active"
+         class="nav-item">Mes commandes</a>
+      <a *ngIf="isAdmin()"
+         routerLink="/addNewProduct"
+         routerLinkActive="nav-active"
+         class="nav-item">Ajouter un produit</a>
+      <a *ngIf="isAdmin()"
+         routerLink="/showProductDetails"
+         routerLinkActive="nav-active"
+         class="nav-item">Produits</a>
+      <a *ngIf="isAdmin()"
+         routerLink="/orderInformation"
+         routerLinkActive="nav-active"
+         class="nav-item">Commandes</a>
+    </nav>
+
+    <div class="header-spacer" *ngIf="!isLoggedIn()"></div>
+
+    <div class="header-actions">
+      <button *ngIf="!isLoggedIn()"
+              routerLink="/login"
+              class="btn-hdr btn-hdr--ghost">Se connecter</button>
+      <button *ngIf="!isLoggedIn()"
+              routerLink="/register"
+              class="btn-hdr btn-hdr--accent">Creer un compte</button>
+      <button *ngIf="isLoggedIn()"
+              (click)="logout()"
+              class="btn-hdr btn-hdr--danger">Deconnexion</button>
+    </div>
+
+  </div>
+</header>

@@ -1,53 +1,60 @@
-<div class="container mt-5">
-    <table mat-table
-           [dataSource]="myOrderDetails"
-           class="mat-elevation-z8">
+<div class="orders-page">
+  <div class="page-header">
+    <h1 class="page-title">Mes commandes <span class="title-bar"></span></h1>
+    <p class="page-subtitle">Historique et suivi de toutes vos commandes</p>
+  </div>
 
-        <ng-container matColumnDef="Name">
-            <th mat-header-cell
-                *matHeaderCellDef> Name </th>
-            <td mat-cell
-                *matCellDef="let element"> {{element.orderFullName}} </td>
-        </ng-container>
+  <div class="table-card">
+    <table mat-table [dataSource]="myOrderDetails" class="orders-table">
 
-        <ng-container matColumnDef="Address">
-            <th mat-header-cell
-                *matHeaderCellDef> Address </th>
-            <td mat-cell
-                *matCellDef="let element"> {{element.orderFullOrder}} </td>
-        </ng-container>
+      <ng-container matColumnDef="Name">
+        <th mat-header-cell *matHeaderCellDef>Produit</th>
+        <td mat-cell *matCellDef="let element">
+          <span class="cell-primary">{{element.productName}}</span>
+        </td>
+      </ng-container>
 
-        <ng-container matColumnDef="Contact No.">
-            <th mat-header-cell
-                *matHeaderCellDef> Contact No. </th>
-            <td mat-cell
-                *matCellDef="let element"> {{element.orderContactNumber}} </td>
-        </ng-container>
+      <ng-container matColumnDef="Address">
+        <th mat-header-cell *matHeaderCellDef>Adresse de livraison</th>
+        <td mat-cell *matCellDef="let element">{{element.orderAddress}}</td>
+      </ng-container>
 
-        <ng-container matColumnDef="Amount">
-            <th mat-header-cell
-                *matHeaderCellDef> Amount </th>
-            <td mat-cell
-                *matCellDef="let element"> {{element.orderAmount}} </td>
-        </ng-container>
+      <ng-container matColumnDef="Contact No.">
+        <th mat-header-cell *matHeaderCellDef>Qte</th>
+        <td mat-cell *matCellDef="let element">
+          <span class="cell-qty">{{element.quantity}}</span>
+        </td>
+      </ng-container>
 
-        <ng-container matColumnDef="Status">
-            <th mat-header-cell
-                *matHeaderCellDef> Status </th>
-            <td mat-cell
-                *matCellDef="let element"> {{element.orderStatus}} </td>
-        </ng-container>
+      <ng-container matColumnDef="Amount">
+        <th mat-header-cell *matHeaderCellDef>Montant</th>
+        <td mat-cell *matCellDef="let element">
+          <span class="cell-amount">Rs. {{element.orderAmount}}</span>
+        </td>
+      </ng-container>
 
-        <ng-container matColumnDef="Action">
-            <th mat-header-cell
-                *matHeaderCellDef> Action </th>
-            <td mat-cell
-                *matCellDef="let element"> <button mat-raised-button color="primary" (click)="facture(element.orderId)">DOWNLOAD THE INVOICE</button> </td>
-        </ng-container>
+      <ng-container matColumnDef="Status">
+        <th mat-header-cell *matHeaderCellDef>Statut</th>
+        <td mat-cell *matCellDef="let element">
+          <span class="status-pill"
+                [ngClass]="element.orderStatus === 'Delivered' ? 'status-delivered' : 'status-placed'">
+            {{element.orderStatus === 'Delivered' ? 'Livre' : 'En cours'}}
+          </span>
+        </td>
+      </ng-container>
 
-        <tr mat-header-row
-            *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row
-            *matRowDef="let row; columns: displayedColumns;"></tr>
+      <ng-container matColumnDef="Action">
+        <th mat-header-cell *matHeaderCellDef>Facture</th>
+        <td mat-cell *matCellDef="let element">
+          <button class="btn-invoice" (click)="facture(element.orderId)">
+            <mat-icon>download</mat-icon>
+            Telecharger
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+  </div>
 </div>

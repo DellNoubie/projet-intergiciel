@@ -24,6 +24,19 @@ export class HomeComponent implements OnInit {
 
   showLoadButton = false;
 
+  categories = [
+    'Electronique',
+    'Vetements',
+    'Maison & Decoration',
+    'Sport & Loisirs',
+    'Beaute & Sante',
+    'Alimentation',
+    'Livres & Medias',
+    'Autres',
+  ];
+
+  selectedCategory = '';
+
   report: Report = new Report();
 
   reportName: StringResult = new StringResult();
@@ -50,6 +63,15 @@ export class HomeComponent implements OnInit {
   }
   ngOnInit(): void {
     this.getAllProducts();
+  }
+
+  get filteredProducts(): any[] {
+    if (!this.selectedCategory) return this.productDetails;
+    return this.productDetails.filter(p => p.productCategory === this.selectedCategory);
+  }
+
+  filterByCategory(cat: string) {
+    this.selectedCategory = this.selectedCategory === cat ? '' : cat;
   }
 
   searchByKeyword(searchkeyword) {
